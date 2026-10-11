@@ -20,6 +20,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -147,15 +148,25 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        // Allow common local development origins and null origin (when opening static files directly in browser)
-        config.setAllowedOriginPatterns(Arrays.asList(
+        // Allow common local development origins and cloud deployment domains (Vercel, Render)
+        List<String> origins = new ArrayList<>(Arrays.asList(
             "http://localhost:*",
             "http://127.0.0.1:*",
             "http://localhost:3000",
-            "http://localhost:5500",
+            "http://localhost:5173",
             "http://localhost:8080",
+            "https://*.vercel.app",
+            "https://*.onrender.com",
             "null"
         ));
+        String customOrigins = System.getenv("CORS_ALLOWED_ORIGINS");
+        if (customOrigins != null && !customOrigins.isBlank()) {
+            origins.addAll(Arrays.stream(customOrigins.split(","))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .toList());
+        }
+        config.setAllowedOriginPatterns(origins);
         config.setAllowedHeaders(Arrays.asList(
             "Authorization", "Cache-Control", "Content-Type", "Accept",
             "X-Requested-With", "X-Auth-Token", "Origin"

@@ -1,9 +1,10 @@
 // Centralized API client for React application
 
 const getBaseUrl = () => {
-  if (typeof window !== 'undefined' && window.location.port === '5173') {
-    // When developing via Vite proxy
-    return '/api';
+  // Support cloud deployments (e.g. Vercel pointing to Render: VITE_API_BASE_URL=https://my-backend.onrender.com)
+  if (import.meta.env.VITE_API_BASE_URL) {
+    const custom = import.meta.env.VITE_API_BASE_URL.trim().replace(/\/$/, '');
+    return custom.endsWith('/api') ? custom : `${custom}/api`;
   }
   return '/api';
 };
