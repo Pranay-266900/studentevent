@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Events Catalog - CampusEventHub</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div id="navbar-container"></div>
+
+    <main class="py-4">
+        <div class="container-xl">
+            <!-- Header Banner -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                <div>
+                    <h2 class="fw-bold mb-1">Campus Events Catalog</h2>
+                    <p class="text-muted mb-0">Browse and register for upcoming college activities and competitions</p>
+                </div>
+                <div id="organizer-add-event-btn" class="d-none">
+                    <a href="organizer-event-form.html" class="btn btn-success">
+                        <i class="bi bi-plus-lg me-1"></i> Create New Event
+                    </a>
+                </div>
+            </div>
+
+            <!-- Filters Section -->
+            <div class="card shadow-sm border-0 mb-4 p-3 bg-white">
+                <div class="row g-3 align-items-center">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+                            <input type="text" id="filter-search" class="form-control" placeholder="Search by title, description, or venue...">
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <select id="filter-category" class="form-select">
+                            <option value="">All Categories</option>
+                            <option value="Technical">Technical</option>
+                            <option value="Cultural">Cultural</option>
+                            <option value="Workshop">Workshop</option>
+                            <option value="Sports">Sports</option>
+                            <option value="Seminar">Seminar</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <select id="filter-status" class="form-select">
+                            <option value="">All Statuses</option>
+                            <option value="UPCOMING" selected>Upcoming</option>
+                            <option value="ONGOING">Ongoing</option>
+                            <option value="COMPLETED">Completed</option>
+                            <option value="CANCELLED">Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <input type="date" id="filter-date" class="form-control" title="Filter by specific date">
+                    </div>
+                    <div class="col-lg-1 col-md-12 text-end">
+                        <button class="btn btn-outline-secondary w-100" id="reset-filters-btn" title="Reset Filters">
+                            <i class="bi bi-arrow-counterclockwise"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Events Grid -->
+            <div id="events-grid-container">
+                <div class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="text-muted mt-2">Loading campus events...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Event Details Modal -->
+    <div class="modal fade" id="eventDetailsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-light">
+                    <div>
+                        <span id="modal-category-badge"></span>
+                        <span id="modal-status-badge" class="ms-1"></span>
+                        <h4 class="modal-title fw-bold mt-2" id="modal-event-title"></h4>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row g-3 mb-4">
+                        <div class="col-sm-6">
+                            <div class="d-flex align-items-center gap-2 p-2 rounded bg-light">
+                                <i class="bi bi-calendar3 fs-5 text-primary"></i>
+                                <div>
+                                    <div class="small text-muted">Event Date</div>
+                                    <div class="fw-semibold" id="modal-event-date"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="d-flex align-items-center gap-2 p-2 rounded bg-light">
+                                <i class="bi bi-clock fs-5 text-primary"></i>
+                                <div>
+                                    <div class="small text-muted">Time Window</div>
+                                    <div class="fw-semibold" id="modal-event-time"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="d-flex align-items-center gap-2 p-2 rounded bg-light">
+                                <i class="bi bi-geo-alt fs-5 text-danger"></i>
+                                <div>
+                                    <div class="small text-muted">Campus Venue</div>
+                                    <div class="fw-semibold" id="modal-event-venue"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="d-flex align-items-center gap-2 p-2 rounded bg-light">
+                                <i class="bi bi-person-badge fs-5 text-success"></i>
+                                <div>
+                                    <div class="small text-muted">Event Organizer</div>
+                                    <div class="fw-semibold" id="modal-event-organizer"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h6 class="fw-bold text-muted text-uppercase small">About This Event</h6>
+                    <p class="text-secondary" id="modal-event-description" style="line-height: 1.6; white-space: pre-line;"></p>
+
+                    <div class="p-3 rounded border bg-light mt-4">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="small fw-semibold">Seat Availability</span>
+                            <span class="small fw-bold" id="modal-seats-text"></span>
+                        </div>
+                        <div class="seat-progress-bar">
+                            <div class="seat-progress-fill" id="modal-seat-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <div id="modal-action-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center small text-muted">
+            &copy; 2026 CampusEventHub - Student Event Registration & Participation System
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        let allEvents = [];
+        let detailsModalInstance = null;
+        let selectedEvent = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            Auth.renderNavbar('events');
+            detailsModalInstance = new bootstrap.Modal(document.getElementById('eventDetailsModal'));
+
+            // Show "Create Event" button if user is Organizer or Admin
+            const user = Auth.getUser();
+            if (user && (user.role === 'ORGANIZER' || user.role === 'ADMIN')) {
+                document.getElementById('organizer-add-event-btn').classList.remove('d-none');
+            }
+
+            // Check URL search params for category
+            const urlParams = new URLSearchParams(window.location.search);
+            const initialCategory = urlParams.get('category');
+            if (initialCategory) {
+                document.getElementById('filter-category').value = initialCategory;
+            }
+
+            // Attach filter listeners
+            document.getElementById('filter-search').addEventListener('input', debounce(loadEvents, 300));
+            document.getElementById('filter-category').addEventListener('change', loadEvents);
+            document.getElementById('filter-status').addEventListener('change', loadEvents);
+            document.getElementById('filter-date').addEventListener('change', loadEvents);
+            document.getElementById('reset-filters-btn').addEventListener('click', () => {
+                document.getElementById('filter-search').value = '';
+                document.getElementById('filter-category').value = '';
+                document.getElementById('filter-status').value = '';
+                document.getElementById('filter-date').value = '';
+                loadEvents();
+            });
+
+            await loadEvents();
+        });
+
+        async function loadEvents() {
+            const container = document.getElementById('events-grid-container');
+            const search = document.getElementById('filter-search').value.trim();
+            const category = document.getElementById('filter-category').value;
+            const status = document.getElementById('filter-status').value;
+            const date = document.getElementById('filter-date').value;
+
+            let query = [];
+            if (search) query.push(`search=${encodeURIComponent(search)}`);
+            if (category) query.push(`category=${encodeURIComponent(category)}`);
+            if (status) query.push(`status=${encodeURIComponent(status)}`);
+            if (date) query.push(`date=${encodeURIComponent(date)}`);
+
+            const queryString = query.length > 0 ? `?${query.join('&')}` : '';
+
+            try {
+                const events = await API.get(`/events${queryString}`);
+                allEvents = events || [];
+                renderEventsList(allEvents);
+            } catch (err) {
+                container.innerHTML = `
+                    <div class="alert alert-danger text-center my-4" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i> Failed to load events: ${err.message}
+                    </div>
+                `;
+            }
+        }
+
+        function renderEventsList(events) {
+            const container = document.getElementById('events-grid-container');
+            if (!events || events.length === 0) {
+                container.innerHTML = App.renderEmptyState(
+                    'No Events Found',
+                    'No campus events matched your selected filter criteria. Try adjusting your search query or reset filters.',
+                    'bi-calendar-x'
+                );
+                return;
+            }
+
+            const user = Auth.getUser();
+
+            container.innerHTML = `
+                <div class="row g-4">
+                    ${events.map(ev => {
+                        const percentFilled = ev.capacity > 0 ? Math.min(100, Math.round((ev.registeredCount / ev.capacity) * 100)) : 0;
+                        let fillClass = '';
+                        if (percentFilled >= 100) fillClass = 'full';
+                        else if (percentFilled >= 80) fillClass = 'almost-full';
+
+                        let actionBtn = '';
+                        if (!user) {
+                            actionBtn = `<a href="login.html" class="btn btn-outline-primary btn-sm w-100">Sign in to Register</a>`;
+                        } else if (user.role === 'STUDENT') {
+                            if (ev.userRegistered) {
+                                actionBtn = `<button class="btn btn-success btn-sm w-100" disabled><i class="bi bi-check-circle me-1"></i> Already Registered</button>`;
+                            } else if (ev.status === 'CANCELLED') {
+                                actionBtn = `<button class="btn btn-secondary btn-sm w-100" disabled>Event Cancelled</button>`;
+                            } else if (ev.status === 'COMPLETED') {
+                                actionBtn = `<button class="btn btn-secondary btn-sm w-100" disabled>Event Ended</button>`;
+                            } else if (ev.availableSeats <= 0) {
+                                actionBtn = `<button class="btn btn-danger btn-sm w-100" disabled>Capacity Full</button>`;
+                            } else {
+                                actionBtn = `<button class="btn btn-primary btn-sm w-100" onclick="registerForEvent(${ev.id})"><i class="bi bi-ticket-perforated me-1"></i> Register Now</button>`;
+                            }
+                        } else if (user.role === 'ORGANIZER' && user.id === ev.organizerId) {
+                            actionBtn = `<a href="organizer-participants.html?eventId=${ev.id}" class="btn btn-outline-success btn-sm w-100"><i class="bi bi-people me-1"></i> Manage (${ev.registeredCount})</a>`;
+                        } else {
+                            actionBtn = `<button class="btn btn-outline-secondary btn-sm w-100" onclick="openDetailsModal(${ev.id})">View Details</button>`;
+                        }
+
+                        return `
+                            <div class="col-lg-4 col-md-6">
+                                <div class="card card-hover h-100 d-flex flex-column">
+                                    <div class="card-body p-4 d-flex flex-column">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            ${App.getCategoryBadge(ev.category)}
+                                            ${App.getStatusBadge(ev.status)}
+                                        </div>
+                                        <h5 class="fw-bold mb-2 text-dark card-title" style="cursor: pointer;" onclick="openDetailsModal(${ev.id})">${ev.title}</h5>
+                                        <p class="text-muted small mb-3 text-truncate-2" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                            ${ev.description}
+                                        </p>
+
+                                        <div class="mt-auto">
+                                            <div class="d-flex align-items-center gap-2 small text-muted mb-2">
+                                                <i class="bi bi-calendar text-primary"></i>
+                                                <span>${App.formatDate(ev.eventDate)}</span>
+                                                <span class="mx-1">•</span>
+                                                <span>${App.formatTime(ev.startTime)}</span>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-2 small text-muted mb-3 text-truncate">
+                                                <i class="bi bi-geo-alt text-danger"></i>
+                                                <span class="text-truncate">${ev.venue}</span>
+                                            </div>
+
+                                            <div class="p-2 rounded bg-light mb-3">
+                                                <div class="d-flex justify-content-between small">
+                                                    <span class="text-muted">Available Seats</span>
+                                                    <span class="fw-bold ${ev.availableSeats <= 5 ? 'text-danger' : 'text-primary'}">${ev.availableSeats} of ${ev.capacity}</span>
+                                                </div>
+                                                <div class="seat-progress-bar">
+                                                    <div class="seat-progress-fill ${fillClass}" style="width: ${percentFilled}%;"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="d-flex gap-2">
+                                                <button class="btn btn-outline-secondary btn-sm" onclick="openDetailsModal(${ev.id})" title="Details">
+                                                    <i class="bi bi-info-circle"></i>
+                                                </button>
+                                                <div class="flex-grow-1">
+                                                    ${actionBtn}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function openDetailsModal(eventId) {
+            selectedEvent = allEvents.find(e => e.id === eventId);
+            if (!selectedEvent) return;
+
+            document.getElementById('modal-event-title').textContent = selectedEvent.title;
+            document.getElementById('modal-category-badge').innerHTML = App.getCategoryBadge(selectedEvent.category);
+            document.getElementById('modal-status-badge').innerHTML = App.getStatusBadge(selectedEvent.status);
+            document.getElementById('modal-event-date').textContent = App.formatDate(selectedEvent.eventDate);
+            document.getElementById('modal-event-time').textContent = `${App.formatTime(selectedEvent.startTime)} - ${App.formatTime(selectedEvent.endTime)}`;
+            document.getElementById('modal-event-venue').textContent = selectedEvent.venue;
+            document.getElementById('modal-event-organizer').textContent = selectedEvent.organizerName || 'College Faculty';
+            document.getElementById('modal-event-description').textContent = selectedEvent.description;
+
+            const percentFilled = selectedEvent.capacity > 0 ? Math.min(100, Math.round((selectedEvent.registeredCount / selectedEvent.capacity) * 100)) : 0;
+            document.getElementById('modal-seats-text').textContent = `${selectedEvent.availableSeats} seats remaining (${selectedEvent.registeredCount} / ${selectedEvent.capacity} booked)`;
+
+            const fillEl = document.getElementById('modal-seat-fill');
+            fillEl.style.width = `${percentFilled}%`;
+            fillEl.className = 'seat-progress-fill';
+            if (percentFilled >= 100) fillEl.classList.add('full');
+            else if (percentFilled >= 80) fillEl.classList.add('almost-full');
+
+            const actionContainer = document.getElementById('modal-action-container');
+            const user = Auth.getUser();
+
+            if (!user) {
+                actionContainer.innerHTML = `<a href="login.html" class="btn btn-primary">Sign in to Register</a>`;
+            } else if (user.role === 'STUDENT') {
+                if (selectedEvent.userRegistered) {
+                    actionContainer.innerHTML = `<a href="my-registrations.html" class="btn btn-success"><i class="bi bi-check-circle me-1"></i> View in My Registrations</a>`;
+                } else if (selectedEvent.availableSeats <= 0) {
+                    actionContainer.innerHTML = `<button class="btn btn-danger" disabled>Capacity Full</button>`;
+                } else if (selectedEvent.status === 'CANCELLED' || selectedEvent.status === 'COMPLETED') {
+                    actionContainer.innerHTML = `<button class="btn btn-secondary" disabled>Registration Closed</button>`;
+                } else {
+                    actionContainer.innerHTML = `<button class="btn btn-primary" onclick="registerForEvent(${selectedEvent.id})"><i class="bi bi-ticket-perforated me-1"></i> Register for Event</button>`;
+                }
+            } else if (user.role === 'ORGANIZER' && user.id === selectedEvent.organizerId) {
+                actionContainer.innerHTML = `<a href="organizer-participants.html?eventId=${selectedEvent.id}" class="btn btn-success">View Participants</a>`;
+            } else {
+                actionContainer.innerHTML = '';
+            }
+
+            detailsModalInstance.show();
+        }
+
+        async function registerForEvent(eventId) {
+            const user = Auth.getUser();
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            App.showConfirmModal(
+                'Confirm Event Registration',
+                'Are you sure you want to register for this event? Your seat will be reserved immediately.',
+                'Confirm & Register',
+                async () => {
+                    try {
+                        await API.post('/registrations', { eventId });
+                        App.showToast('Registration successful! Seat confirmed.', 'success');
+                        if (detailsModalInstance) {
+                            detailsModalInstance.hide();
+                        }
+                        await loadEvents();
+                    } catch (err) {
+                        App.showToast(err.message || 'Registration failed', 'danger');
+                    }
+                }
+            );
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+    </script>
+</body>
+</html>

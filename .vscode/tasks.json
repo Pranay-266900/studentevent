@@ -1,0 +1,89 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Start React Frontend (Vite Dev Server)",
+            "type": "shell",
+            "command": "${workspaceFolder}\\npm.cmd",
+            "args": [
+                "run",
+                "dev"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/student-event-system/frontend-react"
+            },
+            "isBackground": true,
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Build React Frontend (Production)",
+            "type": "shell",
+            "command": "${workspaceFolder}\\npm.cmd",
+            "args": [
+                "run",
+                "build"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/student-event-system/frontend-react"
+            },
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Start Backend (Instant Demo - H2 Profile)",
+            "type": "shell",
+            "command": "${workspaceFolder}\\mvn.cmd",
+            "args": [
+                "spring-boot:run",
+                "\"-Dspring-boot.run.profiles=h2\""
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/student-event-system/backend"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "isBackground": true,
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Start Backend (Spring Boot with MySQL)",
+            "type": "shell",
+            "command": "${workspaceFolder}\\mvn.cmd",
+            "args": [
+                "spring-boot:run"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/student-event-system/backend"
+            },
+            "isBackground": true,
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Run Automated Integration Tests",
+            "type": "shell",
+            "command": "${workspaceFolder}\\mvn.cmd",
+            "args": [
+                "test"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/student-event-system/backend"
+            },
+            "group": "test",
+            "problemMatcher": []
+        }
+    ]
+}

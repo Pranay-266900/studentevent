@@ -1,0 +1,36 @@
+# Portable Tools
+tools/
+
+# Node & Frontend dependencies
+node_modules/
+student-event-system/frontend-react/node_modules/
+student-event-system/frontend-react/dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Java / Maven build output
+target/
+student-event-system/backend/target/
+*.class
+*.jar
+*.war
+*.ear
+
+# IDE & Editor files
+.idea/
+*.iml
+*.ipr
+*.iws
+.settings/
+.classpath
+.project
+.vscode/*
+!.vscode/tasks.json
+!.vscode/settings.json
+
+# Logs & Operating System
+*.log
+.DS_Store
+Thumbs.db
+.system_generated/

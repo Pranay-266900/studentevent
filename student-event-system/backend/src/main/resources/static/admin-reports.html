@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports & Data Export - CampusEventHub</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light">
+
+    <div id="navbar-container"></div>
+
+    <main class="py-4">
+        <div class="container-xl">
+            <!-- Header -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                <div>
+                    <h2 class="fw-bold mb-1">Reports & Analytics Export</h2>
+                    <p class="text-muted mb-0">Generate institutional participation records and download official CSV reports</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-success" id="export-csv-btn" onclick="downloadCsvReport()">
+                        <i class="bi bi-file-earmark-spreadsheet me-1"></i> Download Report CSV
+                    </button>
+                    <a href="admin-dashboard.html" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i> Dashboard
+                    </a>
+                </div>
+            </div>
+
+            <!-- Filters Bar -->
+            <div class="card shadow-sm border-0 mb-4 bg-white p-3">
+                <div class="row g-3 align-items-center">
+                    <div class="col-md-3">
+                        <label class="form-label small fw-semibold text-muted mb-1">Event Filter</label>
+                        <select id="report-event-select" class="form-select">
+                            <option value="">All Campus Events</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small fw-semibold text-muted mb-1">From Date</label>
+                        <input type="date" id="report-start-date" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small fw-semibold text-muted mb-1">To Date</label>
+                        <input type="date" id="report-end-date" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small fw-semibold text-muted mb-1">Registration Status</label>
+                        <select id="report-status-select" class="form-select">
+                            <option value="ALL">All Statuses</option>
+                            <option value="REGISTERED">Active Registered</option>
+                            <option value="CANCELLED">Cancelled Only</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 text-end d-flex align-items-end">
+                        <button class="btn btn-primary w-100" onclick="loadReportsData()">
+                            <i class="bi bi-funnel me-1"></i> Apply Filters
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary KPI Cards -->
+            <div class="row g-3 mb-4">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card border-0 shadow-sm p-3 bg-white h-100">
+                        <div class="text-muted small text-uppercase fw-semibold mb-1">Total Registrations</div>
+                        <div class="h3 fw-bold text-primary mb-1" id="kpi-total-regs">0</div>
+                        <small class="text-muted"><span id="kpi-active-regs">0</span> Active • <span id="kpi-canc-regs">0</span> Cancelled</small>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card border-0 shadow-sm p-3 bg-white h-100">
+                        <div class="text-muted small text-uppercase fw-semibold mb-1">Verified Present</div>
+                        <div class="h3 fw-bold text-success mb-1" id="kpi-present">0</div>
+                        <small class="text-muted">Attendance Confirmed</small>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card border-0 shadow-sm p-3 bg-white h-100">
+                        <div class="text-muted small text-uppercase fw-semibold mb-1">Verified Absent</div>
+                        <div class="h3 fw-bold text-danger mb-1" id="kpi-absent">0</div>
+                        <small class="text-muted">No-show Records</small>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="card border-0 shadow-sm p-3 bg-white h-100">
+                        <div class="text-muted small text-uppercase fw-semibold mb-1">Overall Attendance Rate</div>
+                        <div class="h3 fw-bold text-warning mb-1" id="kpi-att-rate">0%</div>
+                        <small class="text-muted">Present / (Present + Absent)</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report Tables Tabs -->
+            <div class="card shadow-sm border-0 mb-4 bg-white">
+                <div class="card-header bg-white border-bottom">
+                    <ul class="nav nav-tabs card-header-tabs" id="reportTabs">
+                        <li class="nav-item">
+                            <button class="nav-link active fw-semibold" data-bs-toggle="tab" data-bs-target="#tab-events">
+                                <i class="bi bi-calendar-event me-1"></i> Event Registration Counts
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link fw-semibold" data-bs-toggle="tab" data-bs-target="#tab-students">
+                                <i class="bi bi-person-lines-fill me-1"></i> Student Participation History
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link fw-semibold" data-bs-toggle="tab" data-bs-target="#tab-dates">
+                                <i class="bi bi-clock-history me-1"></i> Date-Wise Event Summaries
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body p-0">
+                    <div class="tab-content">
+                        <!-- Tab 1: Event-wise registration counts -->
+                        <div class="tab-pane fade show active" id="tab-events">
+                            <div class="table-responsive">
+                                <table class="table table-custom table-hover align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Event Title</th>
+                                            <th>Category</th>
+                                            <th>Event Date</th>
+                                            <th>Capacity</th>
+                                            <th>Registered</th>
+                                            <th>Fill Rate</th>
+                                            <th>Present</th>
+                                            <th>Absent</th>
+                                            <th>Pending</th>
+                                            <th>Attendance %</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-events-body">
+                                        <tr>
+                                            <td colspan="10" class="text-center py-5 text-muted">Loading event summaries...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Tab 2: Student participation history -->
+                        <div class="tab-pane fade" id="tab-students">
+                            <div class="table-responsive">
+                                <table class="table table-custom table-hover align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Student Name</th>
+                                            <th>Email Address</th>
+                                            <th>Total Registered</th>
+                                            <th>Attended (Present)</th>
+                                            <th>Absent</th>
+                                            <th>Cancelled Bookings</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-students-body">
+                                        <tr>
+                                            <td colspan="6" class="text-center py-5 text-muted">Loading student history...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Tab 3: Date-wise summaries -->
+                        <div class="tab-pane fade" id="tab-dates">
+                            <div class="table-responsive">
+                                <table class="table table-custom table-hover align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Number of Events</th>
+                                            <th>Total Student Bookings</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table-dates-body">
+                                        <tr>
+                                            <td colspan="3" class="text-center py-5 text-muted">Loading date breakdowns...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center small text-muted">
+            &copy; 2026 CampusEventHub - Student Event Registration & Participation System
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!Auth.requireAuth(['ADMIN'])) return;
+            Auth.renderNavbar('admin-reports');
+
+            await populateEventsDropdown();
+            await loadReportsData();
+        });
+
+        async function populateEventsDropdown() {
+            try {
+                const events = await API.get('/events');
+                const sel = document.getElementById('report-event-select');
+                if (events && events.length > 0) {
+                    sel.innerHTML = '<option value="">All Campus Events</option>' +
+                        events.map(e => `<option value="${e.id}">${e.title}</option>`).join('');
+                }
+            } catch (err) {
+                console.warn('Could not populate events selector:', err);
+            }
+        }
+
+        async function loadReportsData() {
+            const eventId = document.getElementById('report-event-select').value;
+            const startDate = document.getElementById('report-start-date').value;
+            const endDate = document.getElementById('report-end-date').value;
+            const status = document.getElementById('report-status-select').value;
+
+            let query = [];
+            if (eventId) query.push(`eventId=${eventId}`);
+            if (startDate) query.push(`startDate=${startDate}`);
+            if (endDate) query.push(`endDate=${endDate}`);
+            if (status) query.push(`status=${status}`);
+
+            const queryString = query.length > 0 ? `?${query.join('&')}` : '';
+
+            try {
+                const report = await API.get(`/admin/reports${queryString}`);
+                if (report) {
+                    // Update KPIs
+                    const statusSum = report.statusSummary || {};
+                    document.getElementById('kpi-total-regs').textContent = statusSum.total || 0;
+                    document.getElementById('kpi-active-regs').textContent = statusSum.registered || 0;
+                    document.getElementById('kpi-canc-regs').textContent = statusSum.cancelled || 0;
+
+                    const attSum = report.attendanceSummary || {};
+                    document.getElementById('kpi-present').textContent = attSum.totalPresent || 0;
+                    document.getElementById('kpi-absent').textContent = attSum.totalAbsent || 0;
+                    document.getElementById('kpi-att-rate').textContent = `${attSum.attendanceRate || 0}%`;
+
+                    // Render Tab 1: Event Summaries
+                    renderEventSummaries(report.eventSummaries || []);
+
+                    // Render Tab 2: Student Summaries
+                    renderStudentSummaries(report.studentSummaries || []);
+
+                    // Render Tab 3: Date Wise Summaries
+                    renderDateSummaries(report.dateWiseSummaries || []);
+                }
+            } catch (err) {
+                App.showToast('Failed to load reports: ' + err.message, 'danger');
+            }
+        }
+
+        function renderEventSummaries(list) {
+            const tbody = document.getElementById('table-events-body');
+            if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="10" class="text-center py-4 text-muted">No events found for given criteria.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = list.map(s => `
+                <tr>
+                    <td class="fw-bold text-dark">${s.title}</td>
+                    <td>${App.getCategoryBadge(s.category)}</td>
+                    <td class="text-muted small">${App.formatDate(s.eventDate)}</td>
+                    <td><span class="badge bg-light text-dark border">${s.capacity}</span></td>
+                    <td class="fw-semibold text-primary">${s.registeredCount}</td>
+                    <td>
+                        <span class="badge ${s.fillRate >= 90 ? 'bg-danger-subtle text-danger' : 'bg-primary-subtle text-primary'}">
+                            ${s.fillRate}%
+                        </span>
+                    </td>
+                    <td class="text-success fw-semibold">${s.presentCount}</td>
+                    <td class="text-danger fw-semibold">${s.absentCount}</td>
+                    <td class="text-warning fw-semibold">${s.pendingCount}</td>
+                    <td>
+                        <span class="badge ${s.attendanceRate >= 75 ? 'bg-success' : 'bg-secondary'}">
+                            ${s.attendanceRate}%
+                        </span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderStudentSummaries(list) {
+            const tbody = document.getElementById('table-students-body');
+            if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">No student participation records found.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = list.map(s => `
+                <tr>
+                    <td class="fw-bold text-dark">${s.studentName}</td>
+                    <td class="text-muted small">${s.studentEmail}</td>
+                    <td class="fw-semibold text-primary">${s.totalRegistered}</td>
+                    <td class="text-success fw-semibold"><i class="bi bi-check-circle me-1"></i>${s.totalPresent}</td>
+                    <td class="text-danger fw-semibold"><i class="bi bi-x-circle me-1"></i>${s.totalAbsent}</td>
+                    <td class="text-muted"><i class="bi bi-slash-circle me-1"></i>${s.totalCancelled}</td>
+                </tr>
+            `).join('');
+        }
+
+        function renderDateSummaries(list) {
+            const tbody = document.getElementById('table-dates-body');
+            if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="text-center py-4 text-muted">No date breakdowns found.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = list.map(d => `
+                <tr>
+                    <td class="fw-semibold text-dark">${App.formatDate(d.date)}</td>
+                    <td><span class="badge bg-light text-dark border">${d.eventCount} events</span></td>
+                    <td class="fw-bold text-primary">${d.totalRegistrations} total registrations</td>
+                </tr>
+            `).join('');
+        }
+
+        async function downloadCsvReport() {
+            const eventId = document.getElementById('report-event-select').value;
+            const startDate = document.getElementById('report-start-date').value;
+            const endDate = document.getElementById('report-end-date').value;
+            const status = document.getElementById('report-status-select').value;
+
+            let query = [];
+            if (eventId) query.push(`eventId=${eventId}`);
+            if (startDate) query.push(`startDate=${startDate}`);
+            if (endDate) query.push(`endDate=${endDate}`);
+            if (status) query.push(`status=${status}`);
+
+            const queryString = query.length > 0 ? `?${query.join('&')}` : '';
+
+            try {
+                App.showToast('Generating official CSV export...', 'info');
+                await API.downloadCsv(`/admin/reports/csv${queryString}`, `campus_event_report_${new Date().toISOString().split('T')[0]}.csv`);
+                App.showToast('CSV export downloaded successfully!', 'success');
+            } catch (err) {
+                App.showToast('Failed to download CSV: ' + err.message, 'danger');
+            }
+        }
+    </script>
+</body>
+</html>

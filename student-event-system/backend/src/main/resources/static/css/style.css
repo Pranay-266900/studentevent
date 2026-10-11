@@ -1,0 +1,344 @@
+/* =====================================================================
+   Student Event Registration & Participation System - Custom Styles
+   ===================================================================== */
+
+:root {
+    --primary-color: #1e3a8a;
+    --primary-light: #3b82f6;
+    --primary-dark: #172554;
+    --secondary-color: #0f766e;
+    --accent-color: #6366f1;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --info-color: #06b6d4;
+    --bg-light: #f8fafc;
+    --card-bg: #ffffff;
+    --text-primary: #0f172a;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* Navbar */
+.navbar-custom {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e1b4b 100%);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+    padding: 0.85rem 1rem;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+    color: #ffffff !important;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.navbar-nav .nav-link {
+    color: #e2e8f0 !important;
+    font-weight: 500;
+    padding: 0.5rem 0.85rem !important;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+.user-badge {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #1e3a8a 0%, #312e81 60%, #1e1b4b 100%);
+    color: #ffffff;
+    padding: 4.5rem 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.25) 0%, transparent 60%);
+    pointer-events: none;
+}
+
+/* Cards */
+.card {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+    background-color: var(--card-bg);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -10px rgba(15, 23, 42, 0.15);
+}
+
+.card-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 600;
+    padding: 1rem 1.25rem;
+    border-top-left-radius: 12px !important;
+    border-top-right-radius: 12px !important;
+}
+
+/* Stat Cards */
+.stat-card {
+    border-radius: 12px;
+    padding: 1.35rem;
+    background: #ffffff;
+    border-left: 4px solid var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.stat-card.primary { border-left-color: var(--primary-light); }
+.stat-card.success { border-left-color: var(--success-color); }
+.stat-card.warning { border-left-color: var(--warning-color); }
+.stat-card.danger { border-left-color: var(--danger-color); }
+.stat-card.info { border-left-color: var(--info-color); }
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.stat-card.primary .stat-icon { background-color: #dbeafe; color: #1d4ed8; }
+.stat-card.success .stat-icon { background-color: #d1fae5; color: #047857; }
+.stat-card.warning .stat-icon { background-color: #fef3c7; color: #b45309; }
+.stat-card.danger .stat-icon { background-color: #fee2e2; color: #b91c1c; }
+.stat-card.info .stat-icon { background-color: #cffafe; color: #0e7490; }
+
+.stat-value {
+    font-size: 1.85rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text-primary);
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* Badges */
+.badge-category {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.35rem 0.65rem;
+    border-radius: 6px;
+}
+
+.badge-cat-technical { background-color: #e0e7ff; color: #3730a3; }
+.badge-cat-cultural { background-color: #fce7f3; color: #9d174d; }
+.badge-cat-sports { background-color: #ecfdf5; color: #065f46; }
+.badge-cat-workshop { background-color: #fef3c7; color: #92400e; }
+.badge-cat-seminar { background-color: #e0f2fe; color: #0369a1; }
+.badge-cat-other { background-color: #f1f5f9; color: #334155; }
+
+/* Status Badges */
+.badge-status-upcoming { background-color: #dbeafe; color: #1e40af; }
+.badge-status-ongoing { background-color: #fef3c7; color: #92400e; }
+.badge-status-completed { background-color: #e2e8f0; color: #334155; }
+.badge-status-cancelled { background-color: #fee2e2; color: #991b1b; }
+
+.badge-attendance-present { background-color: #d1fae5; color: #065f46; }
+.badge-attendance-absent { background-color: #fee2e2; color: #991b1b; }
+.badge-attendance-pending { background-color: #fef3c7; color: #92400e; }
+
+/* Tables */
+.table-custom {
+    margin-bottom: 0;
+}
+
+.table-custom thead th {
+    background-color: #f8fafc;
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.85rem 1rem;
+}
+
+.table-custom tbody td {
+    padding: 0.9rem 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table-custom tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #2563eb;
+    border-color: #2563eb;
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 0.5rem 1.1rem;
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8;
+    border-color: #1d4ed8;
+}
+
+.btn-outline-primary {
+    color: #2563eb;
+    border-color: #2563eb;
+    font-weight: 500;
+    border-radius: 8px;
+}
+
+.btn-outline-primary:hover {
+    background-color: #2563eb;
+    color: #ffffff;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3.5rem 1rem;
+}
+
+.empty-state-icon {
+    font-size: 3.5rem;
+    color: #cbd5e1;
+    margin-bottom: 1rem;
+}
+
+.empty-state-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.empty-state-desc {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    max-width: 450px;
+    margin: 0 auto 1.5rem auto;
+}
+
+/* Toast Notifications */
+#toast-container {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 1090;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.custom-toast {
+    min-width: 300px;
+    max-width: 420px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    padding: 0.85rem 1.15rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-left: 5px solid #2563eb;
+    animation: slideInRight 0.3s ease;
+}
+
+.custom-toast.toast-success { border-left-color: var(--success-color); }
+.custom-toast.toast-danger { border-left-color: var(--danger-color); }
+.custom-toast.toast-warning { border-left-color: var(--warning-color); }
+.custom-toast.toast-info { border-left-color: var(--info-color); }
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Footer */
+footer {
+    background-color: #0f172a;
+    color: #94a3b8;
+    padding: 2rem 0;
+    margin-top: auto;
+    font-size: 0.9rem;
+}
+
+footer a {
+    color: #cbd5e1;
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: #ffffff;
+}
+
+/* Seat progress indicator */
+.seat-progress-bar {
+    height: 6px;
+    border-radius: 3px;
+    background-color: #e2e8f0;
+    overflow: hidden;
+    margin-top: 0.4rem;
+}
+
+.seat-progress-fill {
+    height: 100%;
+    background-color: #2563eb;
+    transition: width 0.3s ease;
+}
+
+.seat-progress-fill.almost-full {
+    background-color: #f59e0b;
+}
+
+.seat-progress-fill.full {
+    background-color: #ef4444;
+}

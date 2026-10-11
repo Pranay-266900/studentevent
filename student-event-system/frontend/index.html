@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusEventHub - Student Event Registration & Participation System</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Header Navbar -->
+    <div id="navbar-container"></div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="container-xl position-relative">
+                <div class="row align-items-center gy-4">
+                    <div class="col-lg-7">
+                        <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold mb-3">
+                            <i class="bi bi-stars me-1"></i> Centralized College Event Platform
+                        </span>
+                        <h1 class="display-4 fw-bold mb-3 text-white">
+                            Discover, Register & Track Your Campus Events
+                        </h1>
+                        <p class="lead mb-4 text-light" style="opacity: 0.9; font-size: 1.15rem;">
+                            Streamline your college journey. Browse hackathons, cultural festivals, tech workshops, sports championships, and seminars with real-time seat availability and attendance tracking.
+                        </p>
+                        <div class="d-flex flex-wrap gap-3">
+                            <a href="events.html" class="btn btn-warning btn-lg px-4 fw-bold text-dark">
+                                <i class="bi bi-search me-2"></i> Explore Events
+                            </a>
+                            <a href="register.html" class="btn btn-outline-light btn-lg px-4">
+                                <i class="bi bi-person-plus me-2"></i> Join as Student
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="card shadow-lg border-0 bg-white text-dark p-4 rounded-4">
+                            <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
+                                <h5 class="fw-bold mb-0 text-primary">
+                                    <i class="bi bi-calendar-check me-2"></i>Upcoming Highlights
+                                </h5>
+                                <span class="badge bg-primary-subtle text-primary fw-semibold">Live Feed</span>
+                            </div>
+                            <div id="hero-events-list">
+                                <div class="text-center py-4">
+                                    <div class="spinner-border text-primary spinner-border-sm" role="status"></div>
+                                    <span class="ms-2 text-muted">Loading events...</span>
+                                </div>
+                            </div>
+                            <a href="events.html" class="btn btn-outline-primary btn-sm mt-3 w-100">
+                                View Full Event Schedule <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Bar -->
+        <section class="py-4 bg-white border-bottom shadow-sm">
+            <div class="container-xl">
+                <div class="row text-center gy-3" id="live-stats-bar">
+                    <div class="col-6 col-md-3">
+                        <div class="h2 fw-bold text-primary mb-1" id="stat-events-count">-</div>
+                        <div class="text-muted small text-uppercase fw-semibold">Active Events</div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="h2 fw-bold text-success mb-1" id="stat-categories-count">5+</div>
+                        <div class="text-muted small text-uppercase fw-semibold">Categories</div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="h2 fw-bold text-info mb-1" id="stat-seats-count">-</div>
+                        <div class="text-muted small text-uppercase fw-semibold">Available Seats</div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="h2 fw-bold text-warning mb-1">100%</div>
+                        <div class="text-muted small text-uppercase fw-semibold">Verified Attendance</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="py-5">
+            <div class="container-xl">
+                <div class="d-flex justify-content-between align-items-end mb-4">
+                    <div>
+                        <h2 class="fw-bold mb-1">Browse by Category</h2>
+                        <p class="text-muted mb-0">Find activities tailored to your passions and academic pursuits</p>
+                    </div>
+                    <a href="events.html" class="btn btn-outline-primary btn-sm">See All Categories</a>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-4 col-sm-6">
+                        <a href="events.html?category=Technical" class="card card-hover text-decoration-none text-dark h-100 p-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="stat-icon bg-primary-subtle text-primary rounded-3 p-3">
+                                    <i class="bi bi-code-slash fs-3"></i>
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-1">Technical</h5>
+                                    <p class="text-muted small mb-0">Hackathons, Coding Contests, Robotics</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <a href="events.html?category=Cultural" class="card card-hover text-decoration-none text-dark h-100 p-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="stat-icon bg-danger-subtle text-danger rounded-3 p-3">
+                                    <i class="bi bi-music-note-beamed fs-3"></i>
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-1">Cultural</h5>
+                                    <p class="text-muted small mb-0">Music, Dance, Drama, Fine Arts</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <a href="events.html?category=Workshop" class="card card-hover text-decoration-none text-dark h-100 p-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="stat-icon bg-warning-subtle text-warning rounded-3 p-3">
+                                    <i class="bi bi-tools fs-3"></i>
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-1">Workshops</h5>
+                                    <p class="text-muted small mb-0">Hands-on practical skill labs & AI training</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <a href="events.html?category=Sports" class="card card-hover text-decoration-none text-dark h-100 p-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="stat-icon bg-success-subtle text-success rounded-3 p-3">
+                                    <i class="bi bi-trophy fs-3"></i>
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-1">Sports</h5>
+                                    <p class="text-muted small mb-0">Inter-college tournaments and leagues</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <a href="events.html?category=Seminar" class="card card-hover text-decoration-none text-dark h-100 p-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="stat-icon bg-info-subtle text-info rounded-3 p-3">
+                                    <i class="bi bi-mic fs-3"></i>
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-1">Seminars & Talks</h5>
+                                    <p class="text-muted small mb-0">Industry leaders, guest lectures, papers</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-sm-6">
+                        <a href="events.html" class="card card-hover text-decoration-none text-dark h-100 p-3 border-dashed">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="stat-icon bg-secondary-subtle text-secondary rounded-3 p-3">
+                                    <i class="bi bi-grid fs-3"></i>
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-1">All Events</h5>
+                                    <p class="text-muted small mb-0">Browse entire event directory</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features by Role -->
+        <section class="py-5 bg-white border-top border-bottom">
+            <div class="container-xl">
+                <div class="text-center max-w-700 mx-auto mb-5">
+                    <h2 class="fw-bold">Built for the Entire College Community</h2>
+                    <p class="text-muted">A dedicated experience designed specifically for students, organizers, and administration.</p>
+                </div>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="card h-100 p-4 border-0 shadow-sm bg-light">
+                            <div class="stat-icon bg-primary text-white rounded-3 mb-3">
+                                <i class="bi bi-backpack4 fs-4"></i>
+                            </div>
+                            <h4 class="fw-bold mb-2">For Students</h4>
+                            <p class="text-muted small mb-3">Effortlessly find events, secure your seat in seconds, monitor your registration status, and maintain a permanent record of participation and attendance.</p>
+                            <ul class="list-unstyled small text-muted mb-4">
+                                <li class="mb-1"><i class="bi bi-check-circle text-primary me-2"></i>Real-time seat count visibility</li>
+                                <li class="mb-1"><i class="bi bi-check-circle text-primary me-2"></i>Instant registration pass</li>
+                                <li class="mb-1"><i class="bi bi-check-circle text-primary me-2"></i>Participation history tracking</li>
+                            </ul>
+                            <a href="register.html?role=STUDENT" class="btn btn-outline-primary btn-sm mt-auto">Student Registration</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100 p-4 border-0 shadow-sm bg-light">
+                            <div class="stat-icon bg-success text-white rounded-3 mb-3">
+                                <i class="bi bi-calendar-event fs-4"></i>
+                            </div>
+                            <h4 class="fw-bold mb-2">For Organizers</h4>
+                            <p class="text-muted small mb-3">Publish departmental events with custom capacities, manage student participant rosters, and mark live attendance with instant statistics.</p>
+                            <ul class="list-unstyled small text-muted mb-4">
+                                <li class="mb-1"><i class="bi bi-check-circle text-success me-2"></i>Automated capacity restriction</li>
+                                <li class="mb-1"><i class="bi bi-check-circle text-success me-2"></i>One-click attendance marking</li>
+                                <li class="mb-1"><i class="bi bi-check-circle text-success me-2"></i>Organizer dashboard metrics</li>
+                            </ul>
+                            <a href="register.html?role=ORGANIZER" class="btn btn-outline-success btn-sm mt-auto">Organizer Registration</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100 p-4 border-0 shadow-sm bg-light">
+                            <div class="stat-icon bg-danger text-white rounded-3 mb-3">
+                                <i class="bi bi-shield-lock fs-4"></i>
+                            </div>
+                            <h4 class="fw-bold mb-2">For Administrators</h4>
+                            <p class="text-muted small mb-3">Comprehensive system oversight: activate or deactivate user accounts, manage events across departments, and export official CSV audit reports.</p>
+                            <ul class="list-unstyled small text-muted mb-4">
+                                <li class="mb-1"><i class="bi bi-check-circle text-danger me-2"></i>System-wide analytics dashboard</li>
+                                <li class="mb-1"><i class="bi bi-check-circle text-danger me-2"></i>Secure role and account management</li>
+                                <li class="mb-1"><i class="bi bi-check-circle text-danger me-2"></i>One-click CSV report export</li>
+                            </ul>
+                            <a href="login.html" class="btn btn-outline-danger btn-sm mt-auto">Admin Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container-xl">
+            <div class="row gy-4">
+                <div class="col-md-5">
+                    <h5 class="text-white fw-bold d-flex align-items-center gap-2">
+                        <i class="bi bi-mortarboard-fill text-warning"></i> CampusEventHub
+                    </h5>
+                    <p class="text-muted small mb-2">
+                        Student Event Registration & Participation System — built with Java, Spring Boot, MySQL, and Bootstrap 5.
+                    </p>
+                    <p class="text-muted small mb-0">&copy; 2026 CampusEventHub. All rights reserved.</p>
+                </div>
+                <div class="col-md-3">
+                    <h6 class="text-white fw-semibold mb-3">Quick Navigation</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-1"><a href="events.html">Upcoming Events</a></li>
+                        <li class="mb-1"><a href="login.html">Login Portal</a></li>
+                        <li class="mb-1"><a href="register.html">Student & Organizer Sign Up</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="text-white fw-semibold mb-3">Campus Administration</h6>
+                    <p class="text-muted small mb-1"><i class="bi bi-geo-alt me-2"></i>Central Campus, Academic Block 4</p>
+                    <p class="text-muted small mb-0"><i class="bi bi-envelope me-2"></i>admin@college.edu</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            Auth.renderNavbar('home');
+
+            // Load upcoming highlights and live stats from backend
+            try {
+                const events = await API.get('/events?status=UPCOMING');
+                const heroList = document.getElementById('hero-events-list');
+
+                if (events && events.length > 0) {
+                    heroList.innerHTML = events.slice(0, 3).map(ev => `
+                        <div class="p-2 border rounded-3 mb-2 bg-light">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h6 class="fw-bold mb-1 text-truncate" style="max-width: 260px;">${ev.title}</h6>
+                                ${App.getCategoryBadge(ev.category)}
+                            </div>
+                            <div class="text-muted small d-flex gap-3 mt-1">
+                                <span><i class="bi bi-calendar me-1"></i>${App.formatDate(ev.eventDate)}</span>
+                                <span class="text-primary fw-semibold"><i class="bi bi-people me-1"></i>${ev.availableSeats} seats left</span>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    // Populate live stats
+                    document.getElementById('stat-events-count').textContent = events.length;
+                    const totalSeats = events.reduce((acc, curr) => acc + (curr.availableSeats || 0), 0);
+                    document.getElementById('stat-seats-count').textContent = totalSeats;
+                } else {
+                    heroList.innerHTML = '<p class="text-muted small text-center my-3">No upcoming events currently scheduled.</p>';
+                }
+            } catch (err) {
+                console.warn('Could not load hero events:', err);
+                const heroList = document.getElementById('hero-events-list');
+                if (heroList) {
+                    heroList.innerHTML = '<p class="text-muted small text-center my-2">Connect to Spring Boot backend to load live events.</p>';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
